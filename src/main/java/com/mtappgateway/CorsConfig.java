@@ -13,12 +13,13 @@ public class CorsConfig {
 	public CorsWebFilter corsFilter() {
 		CorsConfiguration config = new CorsConfiguration();
 		config.addAllowedMethod("*");
-		config.addAllowedOrigin("*");
+		//kiran - this should be changed to customer portal domain name 
+		config.addAllowedOrigin("http://localhost:4700");
+		//config.addAllowedOrigin("*");
 		config.addAllowedHeader("*");
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(new PathPatternParser());
 		source.registerCorsConfiguration("/**", config);
-
 		return new CorsWebFilter(source);
 	}
 
