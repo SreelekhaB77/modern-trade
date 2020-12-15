@@ -14,7 +14,7 @@ public class CorsConfig {
 		CorsConfiguration config = new CorsConfiguration();
 		config.addAllowedMethod("*");
 		//kiran - this should be changed to customer portal domain name 
-		config.addAllowedOrigin("http://localhost:4700");
+		config.addAllowedOrigin("*");
 		//config.addAllowedOrigin("*");
 		config.addAllowedHeader("*");
 
