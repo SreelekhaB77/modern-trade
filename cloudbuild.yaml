@@ -1,18 +1,10 @@
 steps:
-- id: "Fetching source" 
-  name: gcr.io/cloud-builders/gcloud
-  args:
-    - source
-    - repos
-    - clone 
-    - moderntrade-common-util
 - id: "Building Artifacts "
   name: gcr.io/cloud-builders/mvn
   entrypoint: bash
   args:
     - -c
-    - |
-      mvn -f /workspace/moderntrade-common-util/pom.xml clean install 
+    - | 
       mvn clean install
 - id: "Deploying into dev VM"
   name: gcr.io/cloud-builders/gcloud
