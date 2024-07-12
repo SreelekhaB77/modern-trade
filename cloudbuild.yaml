@@ -5,28 +5,28 @@ steps:
     - source
     - repos
     - clone 
-    - moderntrade-common-util
+    - moderntrade-gateway-service
 - id: "Building Artifact"
   name: gcr.io/cloud-builders/mvn
   entrypoint: bash
   args:
     - -c
     - |
-      mvn -f /workspace/moderntrade-common-util/pom.xml clean install 
+      mvn -f /workspace/moderntrade-gateway-service/pom.xml clean install 
       mvn clean install
 - id: "Deploying into master VM"
   name: gcr.io/cloud-builders/gcloud
   args:
     - compute
     - scp
-    - target/$_ARTIFACT_NAME
-    - $_VM_NAME:/home/app_user
-    - --zone=$_VM_ZONE
-    - --impersonate-service-account=$_SERVICE_ACCOUNT_EMAIL
+    - target/mtappgateway.jar
+    - sree@instance-1207:/home/sree
+    - --zone=us-central1-c
+    #- --impersonate-service-account=$_SERVICE_ACCOUNT_EMAIL
 - id: "Restarting the service in master VM"
   name: gcr.io/cloud-builders/gcloud
   entrypoint: bash
   args:
     - -c
     - |
-      gcloud compute ssh $_VM_NAME --zone=$_VM_ZONE --command="kill -9 `ps -ef | grep 'java -jar $_ARTIFACT_NAME' | head -1 | awk '{print $2}'`;nohup java -jar $_ARTIFACT_NAME > $_ARTIFACT_LOG_FILE_NAME &"
+      gcloud compute ssh sree@instance-1207 --zone=us-central1-c --command="kill -9 `ps -ef | grep 'java -jar mtappgateway.jar' | head -1 | awk '{print $2}'`;nohup java -jar mtappgateway.jar  "
